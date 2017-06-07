@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Lobby Dashboards</title>
+<style type="text/css">
+body {
+  border: none;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+iframe {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+#dashboard-0 {
+  font-family: monospace;
+  font-size: 3em;
+  font-weight: bold;
+  padding: 3em;
+}
+</style>
+<script type="text/javascript">
+  window.TW = {};
+  window.TW.query = {};
+  window.TW.Interval = 5 * 1000; // 5 seconds
+
+  window.TW.Countdown = function() {
+    var count = parseInt(document.getElementById('countdown').innerText, 10);
+    if (count > 0) {
+      document.getElementById('countdown').innerText = --count;
+    } else {
+      window.clearInterval(window.TW.CountdownRef);
+      TW.Dashboards[0].display = 'none';
+      window.TW.ToogleRef = window.setInterval(TW.Toogle, TW.Interval);
+      TW.Toogle();
+    }
+  };
+
+  window.TW.Toogle = function() {
+    if (TW.Dashboards[1].display != 'block') {
+      TW.Dashboards[2].display = 'none';
+      TW.Dashboards[1].display = 'block';
+      return;
+    }
+    if (TW.Dashboards[2].display != 'block') {
+      TW.Dashboards[1].display = 'none';
+      TW.Dashboards[2].display = 'block';
+      return;
+    }
+  };
+
+  window.TW.parseQuery = function() {
+    var q = {};
+    var query = window.location.search.substring(1);
+    var kvs = query.split('&');
+    for (var i=0;i<kvs.length;i++) {
+      var kv = kvs[i].split('=');
+      q[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+    }
+    return q;
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    window.TW.Dashboards = [];
+    window.TW.query = TW.parseQuery();
+    window.TW.Interval = parseInt(TW.query.sec, 10) * 1000 || window.TW.Interval;
+    document.getElementById('dashboard-1').src = 'https://app.cyfe.com/dashboards/' + TW.query.u1;
+    document.getElementById('dashboard-2').src = 'https://app.cyfe.com/dashboards/' + TW.query.u2;
+    window.TW.Dashboards.push(document.getElementById('dashboard-0').style);
+    window.TW.Dashboards.push(document.getElementById('dashboard-1').style);
+    window.TW.Dashboards.push(document.getElementById('dashboard-2').style);
+    window.TW.CountdownRef = window.setInterval(TW.Countdown, 1000);
+  });
+
+</script>
+</head>
+<body>
+<div id="dashboard-0">
+<span>Loading Lobby Dashboards... </span><span id="countdown">30</span>
+</div>
+<iframe name="dashboard-1" id="dashboard-1" src="about:blank"></iframe>
+<iframe name="dashboard-2" id="dashboard-2" src="about:blank"></iframe>
+</body>
+</html>
