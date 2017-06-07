@@ -15,7 +15,7 @@ body {
   padding: 0;
 }
 iframe {
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
@@ -44,21 +44,21 @@ iframe {
       document.getElementById('countdown').innerText = --count;
     } else {
       window.clearInterval(window.TW.CountdownRef);
-      TW.Dashboards[0].display = 'none';
+      TW.Dashboards[0].opacity = 0;
       window.TW.ToogleRef = window.setInterval(TW.Toogle, TW.Interval);
       TW.Toogle();
     }
   };
 
   window.TW.Toogle = function() {
-    if (TW.Dashboards[1].display != 'block') {
-      TW.Dashboards[2].display = 'none';
-      TW.Dashboards[1].display = 'block';
+    if (TW.Dashboards[1].opacity != 100) {
+      TW.Dashboards[2].opacity = 0;
+      TW.Dashboards[1].opacity = 100;
       return;
     }
-    if (TW.Dashboards[2].display != 'block') {
-      TW.Dashboards[1].display = 'none';
-      TW.Dashboards[2].display = 'block';
+    if (TW.Dashboards[2].opacity != 100) {
+      TW.Dashboards[1].opacity = 0;
+      TW.Dashboards[2].opacity = 100;
       return;
     }
   };
